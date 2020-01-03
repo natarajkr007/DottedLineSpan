@@ -7,7 +7,7 @@ import android.text.style.ReplacementSpan
  * created by nataraj-7085 on 3/1/20
  */
 
-class DottedSpan(val textColor: Int, val mSpan: String, val dashEffect: Float, val sw: Float) :
+class DottedSpan(val textColor: Int, val dashEffect: Float, val sw: Float) :
     ReplacementSpan() {
 
     private var mPaint: Paint = Paint().apply {
@@ -43,16 +43,10 @@ class DottedSpan(val textColor: Int, val mSpan: String, val dashEffect: Float, v
         bottom: Int,
         paint: Paint
     ) {
-        val mSpanLength = paint.measureText(mSpan)
+        val mSpanLength = paint.measureText(text.subSequence(start, end.plus(1)).toString())
 
-        canvas.drawRect(
-            x,
-            top.toFloat(),
-            y.toFloat().plus(mSpanLength),
-            bottom.toFloat(),
-            rectPaint
-        )
-        canvas.drawText(mSpan, start, end, x, y.toFloat(), paint)
+        canvas.drawRect(RectF(x, top.toFloat(), x.plus(mSpanLength), bottom.toFloat()), rectPaint)
+        canvas.drawText(text, start, text.length, x, y.toFloat(), paint)
 
 
         val path = Path()
