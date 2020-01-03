@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         val dashEffect = resources.getDimension(R.dimen.dashEffect)
         val strokeWidth = resources.getDimension(R.dimen.strokeWidth)
 
-        val dottedSpan = DottedSpan(Color.RED, dashEffect, strokeWidth)
+        val dottedSpan = DottedSpan(Color.BLUE, Color.RED, Color.CYAN, dashEffect, strokeWidth)
         val spannableString = SpannableStringBuilder("nobody is king here").apply {
             setSpan(dottedSpan, 10, 13, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         }

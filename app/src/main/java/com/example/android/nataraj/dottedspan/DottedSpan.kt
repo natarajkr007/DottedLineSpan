@@ -7,18 +7,24 @@ import android.text.style.ReplacementSpan
  * created by nataraj-7085 on 3/1/20
  */
 
-class DottedSpan(val textColor: Int, val dashEffect: Float, val sw: Float) :
+class DottedSpan(
+    val textColor: Int,
+    val strokeColor: Int,
+    val bgColor: Int,
+    val dashEffect: Float,
+    val sw: Float
+) :
     ReplacementSpan() {
 
-    private var mPaint: Paint = Paint().apply {
-        color = textColor
+    private var mStrokePaint: Paint = Paint().apply {
+        color = strokeColor
         style = Paint.Style.STROKE
         pathEffect = DashPathEffect(floatArrayOf(dashEffect, dashEffect), 0F)
         strokeWidth = sw
     }
 
-    private var rectPaint: Paint = Paint().apply {
-        color = Color.CYAN
+    private var mBgPaint: Paint = Paint().apply {
+        color = bgColor
         style = Paint.Style.FILL
     }
 
@@ -45,14 +51,15 @@ class DottedSpan(val textColor: Int, val dashEffect: Float, val sw: Float) :
     ) {
         val mSpanLength = paint.measureText(text.subSequence(start, end.plus(1)).toString())
 
-        canvas.drawRect(RectF(x, top.toFloat(), x.plus(mSpanLength), bottom.toFloat()), rectPaint)
-        canvas.drawText(text, start, text.length, x, y.toFloat(), paint)
+        canvas.drawRect(RectF(x, top.toFloat(), x.plus(mSpanLength), bottom.toFloat()), mBgPaint)
+        paint.color = textColor
+        canvas.drawText(text, start, end.plus(1), x, y.toFloat(), paint)
 
 
         val path = Path()
         path.moveTo(x, y.toFloat())
         path.lineTo(x.plus(mSpanLength), y.toFloat())
-        canvas.drawPath(path, mPaint)
+        canvas.drawPath(path, mStrokePaint)
     }
 
 }
